@@ -1,9 +1,9 @@
-defmodule WhileTest do
+defmodule UntilTest do
   use ExUnit.Case
 
   import ExUnit.CaptureIO
 
-  import While
+  import Until
 
   test "works" do
     counter = 0
@@ -12,7 +12,7 @@ defmodule WhileTest do
     puts =
       capture_io(fn ->
         {counter, list} =
-          while counter < 10 <- {counter, acc} do
+          until counter == 10 <- {counter, acc} do
             IO.puts("hi")
             counter = counter + 1
 
@@ -43,7 +43,7 @@ defmodule WhileTest do
     puts =
       capture_io(fn ->
         thing =
-          while counter < 10 <- counter do
+          until counter == 10 <- counter do
             IO.puts("hi")
             counter = counter + 1
 
@@ -73,7 +73,7 @@ defmodule WhileTest do
     puts =
       capture_io(fn ->
         thing =
-          while truth? = counter < 10 <- counter do
+          until truth? = counter == 10 <- counter do
             IO.puts(inspect(truth?))
 
             counter + 1
@@ -83,16 +83,16 @@ defmodule WhileTest do
       end)
 
     assert puts == """
-           true
-           true
-           true
-           true
-           true
-           true
-           true
-           true
-           true
-           true
+           false
+           false
+           false
+           false
+           false
+           false
+           false
+           false
+           false
+           false
            """
   end
 end

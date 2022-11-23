@@ -1,9 +1,9 @@
-defmodule While.MixProject do
+defmodule Until.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :while,
+      app: :until,
       version: "0.1.0",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,

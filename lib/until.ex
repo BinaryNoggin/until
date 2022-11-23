@@ -1,4 +1,4 @@
-defmodule While do
+defmodule Until do
   @moduledoc """
   Generic reducer construct for iterating over arbitrary data structures.
 
@@ -7,14 +7,14 @@ defmodule While do
   ## Parser Example
 
   ```elixir
-  import While
+  import Until
 
   # 👇 A: non-enumerable data
   parser = %Parser{}
 
-  parser = 
-    #     👇 B: condition           👇 C: data being iterated over 
-    while another_token?(parser) <- parser do
+  parser =
+    #     👇 B: condition           👇 C: data being iterated over
+    until no_tokens?(parser) <- parser do
       # D: returns a Parser struct that has consumed the next token
       # value is passed to the next iteration
       Parser.next_token(parser)
@@ -26,12 +26,12 @@ defmodule While do
   ```elixir
     counter = 0
 
-    while counter < 10 <- counter do
+    until counter == 10 <- counter do
       counter + 1
     end
   ```
   """
-  defmacro while(expression, do: block) do
+  defmacro until(expression, do: block) do
     {:<-, _, [condition, acc]} = expression
 
     predicate =
@@ -51,17 +51,17 @@ defmodule While do
       end
 
     quote do
-      do_while(unquote(acc), unquote(predicate))
+      do_until(unquote(acc), unquote(predicate))
     end
   end
 
-  def do_while(acc, predicate) do
+  def do_until(acc, predicate) do
     {condition, wrapped_body} = predicate.(acc)
 
-    if condition do
+    unless condition do
       acc = wrapped_body.(acc)
 
-      do_while(acc, predicate)
+      do_until(acc, predicate)
     else
       acc
     end
